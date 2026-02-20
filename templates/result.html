@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Results · AI Job Hunt</title>
+  <link rel="stylesheet" href="/static/styles.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-okaidia.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+
+  <script defer>
+    function copyBlock(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText);
+      const btn = document.querySelector('[data-copy="' + id + '"]');
+      if (btn) {
+        const old = btn.innerText;
+        btn.innerText = "COPIED";
+        setTimeout(() => btn.innerText = old, 900);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="matrix-rain"></div>
+
+  <header class="topbar">
+    <div class="brand">AI JOB HUNT · RESULTS</div>
+    <div class="status">
+      <span class="pill">Lang: {{ "Svenska" if lang=="sv" else "English" }}</span>
+      {% if role %}<span class="pill">Role: {{ role }}</span>{% endif %}
+      {% if company_name %}<span class="pill">Company: {{ company_name }}</span>{% endif %}
+      <span class="pill">Remaining: {{ remaining }}</span>
+      <a class="link" href="/">New run</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel-title">
+        <span>OUTPUT CONSOLE</span>
+        <span class="muted">Collapsible · Copy</span>
+      </div>
+
+      <details class="block" open>
+        <summary>
+          <span>Module 1 · Recruiter Match (Before)</span>
+          <button type="button" class="copy" data-copy="m1" onclick="copyBlock('m1')">COPY</button>
+        </summary>
+        <pre class="code"><code id="m1" class="language-json">{{ match_before_pretty }}</code></pre>
+      </details>
+
+      <details class="block" open>
+        <summary>
+          <span>Module 2 · Optimized Experience (X–Y–Z)</span>
+          <button type="button" class="copy" data-copy="m2" onclick="copyBlock('m2')">COPY</button>
+        </summary>
+        <pre class="code"><code id="m2" class="language-markup">{{ optimized }}</code></pre>
+      </details>
+
+      <details class="block" open>
+        <summary>
+          <span>Module 3 · ATS Audit</span>
+          <button type="button" class="copy" data-copy="m3" onclick="copyBlock('m3')">COPY</button>
+        </summary>
+        <pre class="code"><code id="m3" class="language-json">{{ risks_pretty }}</code></pre>
+      </details>
+
+      <details class="block" open>
+        <summary>
+          <span>Module 4 · ATS Submission CV</span>
+          <button type="button" class="copy" data-copy="m4" onclick="copyBlock('m4')">COPY</button>
+        </summary>
+        <pre class="code"><code id="m4" class="language-markup">{{ ats_cv }}</code></pre>
+      </details>
+
+      {% if culture_report %}
+      <details class="block" open>
+        <summary>
+          <span>Module 6 · Culture Reality vs Image</span>
+          <button type="button" class="copy" data-copy="m6" onclick="copyBlock('m6')">COPY</button>
+        </summary>
+        <pre class="code"><code id="m6" class="language-markup">{{ culture_report }}</code></pre>
+      </details>
+      {% endif %}
+
+      <details class="block" open>
+        <summary>
+          <span>Re-score · Recruiter Match (After)</span>
+          <button type="button" class="copy" data-copy="after" onclick="copyBlock('after')">COPY</button>
+        </summary>
+        <pre class="code"><code id="after" class="language-json">{{ match_after_pretty }}</code></pre>
+      </details>
+
+      <details class="block" open>
+        <summary>
+          <span>Modules 5, 7, 8 · Interview Pack</span>
+          <button type="button" class="copy" data-copy="ip" onclick="copyBlock('ip')">COPY</button>
+        </summary>
+        <pre class="code"><code id="ip" class="language-markup">{{ interview }}</code></pre>
+      </details>
+
+    </section>
+  </main>
+</body>
+</html>

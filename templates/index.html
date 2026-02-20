@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>AI Job Hunt</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="matrix-rain"></div>
+
+  <header class="topbar">
+    <div class="brand">AI JOB HUNT</div>
+    <div class="status">
+      <span class="pill">Daily cap: {{ daily_cap }}</span>
+      <span class="pill">Remaining: {{ remaining }}</span>
+      {% if unlocked %}
+        <a class="link" href="/logout">Lock</a>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="panel">
+      <div class="panel-title">
+        <span>ACCESS GATE</span>
+        <span class="muted">Required to run</span>
+      </div>
+
+      {% if error %}
+        <div class="alert">{{ error }}</div>
+      {% endif %}
+
+      {% if not unlocked %}
+        <form method="post" action="/unlock" class="row">
+          <input name="access_key" type="password" placeholder="Enter access key" required>
+          <button type="submit">UNLOCK</button>
+        </form>
+      {% else %}
+        <div class="ok">UNLOCKED ✓</div>
+      {% endif %}
+    </section>
+
+    <section class="panel">
+      <div class="panel-title">
+        <span>RUN PIPELINE</span>
+        <span class="muted">Modules 1–8 · Matrix mode</span>
+      </div>
+
+      <form method="post" action="/run" class="form">
+        <div class="row">
+          <div style="flex:1; min-width: 220px;">
+            <label>Language</label>
+            <select name="language">
+              <option value="en">English</option>
+              <option value="sv">Svenska</option>
+            </select>
+          </div>
+          <div style="flex:2; min-width: 320px;">
+            <label>Target role (optional)</label>
+            <input name="target_role" placeholder="e.g., Data Analyst">
+          </div>
+          <div style="flex:2; min-width: 320px;">
+            <label>Company name (optional)</label>
+            <input name="company_name" placeholder="e.g., Acme AB">
+          </div>
+        </div>
+
+        <label>CV (paste plain text)</label>
+        <textarea name="cv" rows="10" required placeholder="Paste CV here..."></textarea>
+
+        <label>Job Ad (paste plain text)</label>
+        <textarea name="job_ad" rows="10" required placeholder="Paste job description here..."></textarea>
+
+        <details class="block" open>
+          <summary>
+            <span>Module 6 · Culture Reality Check (optional)</span>
+            <span class="muted small">Provide both inputs</span>
+          </summary>
+          <div class="inner">
+            <label>Official culture / employer branding text</label>
+            <textarea name="company_culture" rows="6" placeholder="Careers page values, mission, culture statements..."></textarea>
+
+            <label>Employee reviews (Glassdoor/Indeed-like)</label>
+            <textarea name="employee_reviews" rows="6" placeholder="Paste review excerpts or summarized themes..."></textarea>
+          </div>
+        </details>
+
+        <div class="row">
+          <button type="submit" {% if not unlocked or remaining <= 0 %}disabled{% endif %}>RUN ANALYSIS</button>
+          <div class="muted small">Rate limit: 3 runs/hour per IP · Cap: {{ daily_cap }}/day</div>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
